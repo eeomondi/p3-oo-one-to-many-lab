@@ -10,8 +10,12 @@ class Pet:
         self.pet_type = pet_type
         self.owner = owner
 
-        # Add the pet to the all list
+        
         Pet.all.append(self)
+
+        
+        if owner is not None:
+            owner.add_pet(self)
 
 class Owner:
     def __init__(self, name):
@@ -24,8 +28,9 @@ class Owner:
     def add_pet(self, pet):
         if not isinstance(pet, Pet):
             raise Exception("You can only add a Pet.")
-        pet.owner = self  # Assign the owner to the pet
-        self._pets.append(pet)
+        if pet not in self._pets:  
+            self._pets.append(pet)
+            pet.owner = self  
 
     def get_sorted_pets(self):
         return sorted(self._pets, key=lambda pet: pet.name)
